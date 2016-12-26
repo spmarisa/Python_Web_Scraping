@@ -49,7 +49,7 @@ def all_product_urls(category_url):
 
     product_urls = []
     for product_url in product_tags:
-        product_urls.append(main_url + "/" + product_url.product_url["href"])
+        product_urls.append(main_url + "/" + product_url.a["href"])
 
     for product_url in product_urls:
         data_from_product_url(product_url)

@@ -1,14 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
+from urllib.request import urlretrieve
+import urllib.parse
+import json
+main_url = "http://www.hamleys.com"
 
-url = "http://www.hamleys.com"
-r = requests.get(url)
-soup = BeautifulSoup(r.content, "lxml")
+main_request = requests.get(main_url)
+main_content = BeautifulSoup(main_request.content, "lxml")
 
-links = soup.find_all("ul", {"class": "topNav shopNav"})
+category_tags = main_content.find_all("ul", {"class": "topNav shopNav"})
 
+category_names = category_tags[0].find_all("a", {"class": "menu"}, href=True)
 
-z = links[0].find_all("a", {"class": "menu"})
+category_urls = []
 
-for i in z:
-    print(i)
+for category_name in category_names:
+    category_urls.append(main_url + "/" + category_name["href"])

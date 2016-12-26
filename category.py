@@ -1,14 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
-
-url = "http://www.hamleys.com/arts-crafts.irc"
-r = requests.get(url)
-soup = BeautifulSoup(r.content, "lxml")
-
-links = soup.find_all("li", {"class": "productThumbImage"})
-
-for a in links:
-    a.a["href"]
+from urllib.request import urlretrieve
+import urllib.parse
+import json
+main_url = "http://www.hamleys.com"
 
 
-links
+def all_product_urls(category_url):
+    category_request = requests.get(category_url)
+    category_content = BeautifulSoup(category_request.content, "lxml")
+
+    product_tags = category_content.find_all("li", {"class": "productThumbImage"})
+    product_urls = []
+
+    for product_url in product_tags:
+        product_urls.append(main_url + "/" + product_url.a["href"])
+
+    return product_urls
+
+all_product_urls("http://www.hamleys.com/preschool-baby.irc")
